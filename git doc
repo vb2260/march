@@ -1,0 +1,7 @@
+##to resolve the conflicts##
+ git pull origin branchname
+ git stash
+ git pull origin branchname
+ git stash pop
+and then go to the file and resolve the conflicts 
+
