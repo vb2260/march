@@ -1,0 +1,167 @@
+#---
+# tasks file for fusion
+
+- import_tasks: tasks/copy-environments-vars.yml
+
+- import_tasks: tasks/update-fusion-configurations.yml
+
+- import_tasks: tasks/create-bedbath_temp.yml
+when: SERVER_TYPE == "signal"
+
+#- import_tasks: tasks/create-bedbath-app.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-sku-app.yml
+#  when: SERVER_TYPE == "sku" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath_typeahead-app.yml
+#  when: SERVER_TYPE == "typeahead" or SERVER_TYPE == "signal"
+#  
+#- import_tasks: tasks/create-bedbath_registry_name-app.yml
+#  when: SERVER_TYPE == "typeahead" or SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-bedbath-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath_everliving-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath_signals-collection.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-bedbath_category_aggr-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath_search_aggr-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#  
+#- import_tasks: tasks/create-bedbath_search_cdp_aggr-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#  
+#- import_tasks: tasks/create-bedbath_rules-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath_rules_feedback-collection.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-bedbath_product_attributes-collection.yml
+#  when: SERVER_TYPE == "signal" 
+#
+#- import_tasks: tasks/create-bedbath_test_product_attributes-collection.yml
+#  when: SERVER_TYPE == "signal" and env =='test'
+#  
+#- import_tasks: tasks/create-bedbath_eqa_product_attributes-collection.yml
+#  when: SERVER_TYPE == "signal" and env =='test'
+#
+#- import_tasks: tasks/create-bedbath-qaf-collection.yml
+#  when: SERVER_TYPE == "signal" 
+#
+#- import_tasks: tasks/create-bedbath-test-qaf-collection.yml
+#  when: SERVER_TYPE == "signal" and env =='test'
+#  
+#- import_tasks: tasks/create-bedbath-eqa-qaf-collection.yml
+#  when: SERVER_TYPE == "signal" and env =='test'
+#
+#- import_tasks: tasks/create-bedbath_product_reviews-collection.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-bedbath_category_aggr_trim-collection.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-bedbath_search_cdp_aggr_trim-collection.yml
+#  when: SERVER_TYPE == "signal"
+#  
+#- import_tasks: tasks/create-bedbath_search_aggr_trim-collection.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-bedbath-signal-summary-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath-ideaboard-count-summary-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath_product_bundle.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath-ideaboard.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-sku-collection.yml
+#  when: SERVER_TYPE == "sku" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#  
+#- import_tasks: tasks/create-bedbath_typeahead-collection.yml
+#  when: SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead"
+#  
+#- import_tasks: tasks/create-bedbath_typeahead_experiment1-collection.yml
+#  when: SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead"
+#
+#- import_tasks: tasks/create-bedbath_product_categories-collection.yml
+#  when: SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead"
+#
+#- import_tasks: tasks/create-Interactive_Checklist_Categories-collection.yml
+#  when: SERVER_TYPE == "signal" or SERVER_TYPE == "query"
+#  
+#- import_tasks: tasks/create-bedbath_registry_name-collection.yml  
+#  when: SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead"
+#
+#- import_tasks: tasks/create-bedbath_registry_name-lower-collection.yml
+#  when: env == "stage" and (SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead")
+#
+#- import_tasks: tasks/create-bedbath_registry_name-mirror1-collection.yml
+#  when: env == "stage" and (SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead")
+#
+#- import_tasks: tasks/create-bedbath_registry_name-mirror2-collection.yml
+#  when: env == "stage" and (SERVER_TYPE == "signal" or SERVER_TYPE == "typeahead")
+#
+#- import_tasks: tasks/create-bedbath_ltr_boosted_products-collection.yml
+#  when: SERVER_TYPE == "signal" or SERVER_TYPE == "query" or SERVER_TYPE == "pregen"
+#  
+#- import_tasks: tasks/create-bedbath-related-searches-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath-product-recommendation-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-bedbath-longtail-topic-products-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-warehouse_to_zipcode-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-sku_to_warehouse-collection.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-cms_config-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal" or SERVER_TYPE == "pregen"
+#
+#- import_tasks: tasks/create-signals_based_related_searches-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/create-search_terms_perf_report-collection.yml
+#  when: SERVER_TYPE == "query" or SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/import-query-and-index-pipelines.yml
+#
+#- import_tasks: tasks/import-query-and-index-profiles.yml
+#  
+#- import_tasks: tasks/import-delta-schema-for-all-collections.yml
+#
+#- import_tasks: tasks/add-update-spark-jobs.yml
+#  when: SERVER_TYPE == "signal"
+#
+#- import_tasks: tasks/add-update-test-server-spark-jobs.yml
+#  when: SERVER_TYPE == "signal" and env =='test'
+#
+#- import_tasks: tasks/add-update-of-recommsignalds-spark-jobs.yml
+#  when: SERVER_TYPE == "recommsignalds"
+#   
+#- import_tasks: tasks/create-fusion-roles.yml
+#
+#- import_tasks: tasks/create-fusion-realms.yml
+#
+#- import_tasks: tasks/create-fusion-users.yml
+#
+#- import_tasks: tasks/disable-autocomplete-jobs.yml
+#
+#- import_tasks: tasks/import-synonyms-file-and-update.yml
+#
