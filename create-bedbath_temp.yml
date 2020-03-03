@@ -1,0 +1,36 @@
+---
+# tasks file for bedbath_temp collection
+
+- name: Create the bedbath_temp collection
+  uri:
+    url: "http://{{ HOST }}:{{ FUSION_API_PORT }}/api/collections/bedbath_temp?defaultFeatures=false&relatedObjects=false"
+    method: PUT
+    user: "{{ FUSION_API_USER }}"
+    password: "{{ FUSION_API_PASSWORD }}"
+    force_basic_auth: yes
+    body_format: json
+    body: "{\"solrParams\":{\"replicationFactor\":{{ BEDBATH_TEMP_COLLECTION_REPLICATION_FACTOR }},\"numShards\":{{ BEDBATH_TEMP_COLLECTION_NUM_SHARDS }}}}"
+    timeout: 5000
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+  register: response
+
+- debug:
+    var: response.msg
+
+- name: Associate the bedbath_temp_attributes collection with {{ BEDBATH_APP_NAME }} app
+  uri:
+    url: "http://{{ HOST }}:{{ FUSION_API_PORT }}/api/links"
+    method: PUT
+    user: "{{ FUSION_API_USER }}"
+    password: "{{ FUSION_API_PASSWORD }}"
+    force_basic_auth: yes
+    body_format: json
+    body: "{\"linkType\": \"hasContext\", \"object\": \"collection:bedbath_temp\", \"subject\": \"app:{{ BEDBATH_APP_NAME }}\"}"
+    timeout: 5000
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+  register: response
+  

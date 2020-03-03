@@ -1,0 +1,440 @@
+{
+  "objects": {
+    "queryPipelines": [
+      {
+        "id": "bbb-product-full",
+        "stages": [
+          {
+            "type": "set-params",
+            "id": "tgi6",
+            "params": [
+              {
+                "key": "omitHeader",
+                "value": "true",
+                "policy": "append"
+              },
+              {
+                "key": "facets",
+                "value": "false",
+                "policy": "replace"
+              },
+              {
+                "key": "wt",
+                "value": "json",
+                "policy": "replace"
+              },
+              {
+                "key": "json.nl",
+                "value": "arrarr",
+                "policy": "replace"
+              },
+              {
+                "key": "start",
+                "value": "0",
+                "policy": "replace"
+              },
+              {
+                "key": "q",
+                "value": "*:*",
+                "policy": "remove"
+              },
+              {
+                "key": "mm",
+                "value": "1",
+                "policy": "replace"
+              },
+              {
+                "key": "spellcheck",
+                "value": "false",
+                "policy": "replace"
+              }
+            ],
+            "type": "set-params",
+            "skip": false,
+            "label": "Remove Facets and Add default params",
+            "secretSourceStageId": "tgi6"
+          },
+	  {
+        "type" : "set-params",
+        "id" : "isr",
+        "params" : [ {
+          "key" : "fl",
+          "value" : "PRODUCT_ID,SITE_ID,SITE_NUM,RECORD_IDENTIFIER,PRICE_RANGE_STRING,PRICE_RANGE_DESCRIP,GIFT_CERT,DISPLAY_NAME,DESCRIPTION,COLLECTION_FLAG,SWATCH_FLAG,ROLLUP_TYPE_CODE,INTL_RESTRICTED,EMAIL_OUT_OF_STOCK,SCENE7_URL,SEO_URL,SHOP_GUIDE_ID,BRAND_DESCRIP,INCART_FLAG,PRICE_RANGE_STRING_MX,INVENTORY_STATUS,PROD_ATTRIBUTES,ATTRIBUTES_JSON,CATEGORY_HIERARCHY,SKU_ID,LTL_FLAG,SKU_TYPE,VENDOR_ID,SKU_FOR_SWATCH,ALT_IMG,SKU_FOR_SWATCH_ALL,CHILD_PRODUCT,PARENT_PRODUCT,MEDIA_JSON,MX_INCART_FLAG,MX_PRICING_LABEL_CODE,LOW_PRICE,HIGH_PRICE,SALE_PRICE_RANGE_STRING,PRICING_LABEL_CODE,BRAND_ID,BRAND_NAME,BRAND_IMAGE_URL,LONG_DESCRIPTION,CATEGORY_HIERARCHY_ALL,CHILD_PRODUCT,WAS_LOW_PRICE,WAS_HIGH_PRICE,REVIEWS,RATINGS,IMG_HIERARCHY_ALL,LEAD_PRD_FLAG,PRODUCT_LTL_FLAG,L1_ID,L2_ID,L3_ID,FEATURES_JSON,SPECS_JSON,ELIGIBLE_CUSTOMIZATION_DESCRIP,PRIMARY_CATEGORY,CATEGORY_ID,VDC_SKU_TYPE,CUSTOMIZATION_OFFERED_FLAG,PERSONALIZATION_VENDOR,PERSONALIZATION_TYPE,HARMON_DESCRIPTION,HIGH_PRICE_MX,LOW_PRICE_MX,WAS_HIGH_PRICE_MX,WAS_LOW_PRICE_MX,SALE_PRICE_RANGE_STRING_MX,INTL_LOW_PRICE,INTL_HIGH_PRICE,INTL_WAS_LOW_PRICE,INTL_WAS_HIGH_PRICE,PARENT_PROD_INFO,PRE_ORDER_START_DATE,TBS_PRICE,TBS_MX_PRICE,SERVICE_NAME,SERVICE_TYPE_CD,PRODUCT_VARIATION_s,MINIMUM_SKU_QTY,BEYOND_PLUS_PRODUCT_s,ACTIVE_PRODUCT_ID,ACTIVE_PRODUCT_DISPLAY_NAME,CART_COUNT_l,CLICKS_COUNT_l,ORDERS_COUNT_l,IDEABOARD_COUNT_l,BUNDLE_FLAG_s,WARRANTY_TYPE_s,BADGE_s",
+          "policy" : "replace"
+        } ],
+        "type" : "set-params",
+        "skip" : false,
+        "label" : "Default Fields",
+        "condition" : "!request.hasParam('rc') || !(request.getFirstParam(\"rc\").equalsIgnoreCase(\"minimal\") ||\nrequest.getFirstParam(\"rc\").equalsIgnoreCase(\"parent\"));",
+        "secretSourceStageId" : "isr"
+      },
+	  {
+        "type" : "set-params",
+        "id" : "ys",
+        "params" : [ {
+          "key" : "fl",
+          "value" : "PRODUCT_ID,SITE_ID,PRICE_RANGE_STRING,PRICE_RANGE_DESCRIP,DISPLAY_NAME,SCENE7_URL,SEO_URL,MX_PRICING_LABEL_CODE,LOW_PRICE,HIGH_PRICE,SALE_PRICE_RANGE_STRING,PRICING_LABEL_CODE,RATINGS,REVIEWS,TBS_PRICE,TBS_MX_PRICE,SERVICE_NAME,SERVICE_TYPE_CD,PRODUCT_VARIATION_s,MINIMUM_SKU_QTY,BEYOND_PLUS_PRODUCT_s,BADGE_s",
+          "policy" : "replace"
+        } ],
+        "type" : "set-params",
+        "skip" : false,
+        "label" : "Fields For Minimal Product Details",
+        "condition" : "request.hasParam('rc') && request.getFirstParam(\"rc\").equalsIgnoreCase(\"minimal\");",
+        "secretSourceStageId" : "ys"
+      },
+	  {
+		"type" : "set-params",
+        "id" : "eyd",
+        "params" : [ {
+          "key" : "fl",
+          "value" : "PRODUCT_ID,DISPLAY_NAME,SCENE7_URL,SEO_URL,L1_ID,L1_NAME,L2_ID,L2_NAME,L3_ID,L3_NAME,CATEGORY_HIERARCHY_ALL,PRIMARY_CATEGORY,MINIMUM_SKU_QTY,BEYOND_PLUS_PRODUCT_s,CART_COUNT_l,CLICKS_COUNT_l,ORDERS_COUNT_l,IDEABOARD_COUNT_l,BUNDLE_FLAG_s,BADGE_s",
+          "policy" : "replace"
+        } ],
+        "type" : "set-params",
+        "skip" : false,
+        "label" : "Fields for Parent Product",
+        "condition" : "request.hasParam('rc') && request.getFirstParam(\"rc\").equalsIgnoreCase(\"parent\");",
+        "secretSourceStageId" : "eyd"
+      },
+	  {
+		"type" : "set-params",
+        "id" : "8ug",
+		"params" : [ {
+		"key" : "fl",
+		"value" : "id:PRODUCT_ID,normal:PRICE_RANGE_STRING,lowValue:LOW_PRICE,normalValue:HIGH_PRICE,low:SALE_PRICE_RANGE_STRING",
+		"policy" : "replace"
+		} ],
+		"type" : "set-params",
+		"skip" : false,
+		"label" : "Fields for XT compatibility",
+		"condition" : "request.hasParam('rc') && request.getFirstParam(\"rc\").equalsIgnoreCase(\"xt\");",
+		"secretSourceStageId" : "8ug"
+	 },
+	 {
+	     "type" : "set-params",
+	     "id" : "uq",
+	     "params" : [ {
+	       "key" : "echoParams",
+	       "value" : "none",
+	       "policy" : "replace"
+	     }, {
+	       "key" : "debug",
+	       "value" : "false",
+	       "policy" : "remove"
+	     }, {
+	       "key" : "facet.mincount",
+	       "value" : "1",
+	       "policy" : "default"
+	     }, {
+	       "key" : "debugQuery",
+	       "value" : "false",
+	       "policy" : "replace"
+	     }, {
+	       "key" : "debug.explain.structured",
+	       "value" : "false",
+	       "policy" : "replace"
+	     }, {
+	       "key" : "rules.debug",
+	       "value" : "false",
+	       "policy" : "replace"
+	     } ],
+	     "type" : "set-params",
+	     "skip" : false,
+	     "label" : "Remove header and other tuning",
+	     "condition" : "",
+	     "secretSourceStageId" : "uq"
+	   },
+          {
+            "type": "javascript-query",
+            "id": "tn",
+            "script": "//abc\nvar siteId = request.getFirstParam('site');\nvar productId = request.getFirstParam('id');\nvar skuId = request.getFirstParam('sku');\n\nif(siteId!=null){\n\trequest.addParam('fq','SITE_ID:'+siteId);\n}\n\nif(productId!=null){\n  \tif (productId.contains('|')){\n  \t\tproductId = productId.split('|');\n      \tvar weight = productId.length;\n      \trequest.putSingleParam('prod_count',weight);\n      \tfor(var i=0; i<productId.length; i++){\n\t\t\tproductId[i]= productId[i] + \"^\" + weight--;   \n        }\n      \tproductId = productId.join (' ');\n    }\n    request.putSingleParamIfAbsent('prod_count',1);\n\t//request.addParam('fq','PRODUCT_ID:'+productId);\n  \trequest.addParam('q',productId);\n} else if(skuId!=null){\n  \tif (skuId.contains('|')){\n  \t\tskuId = skuId.split('|');\n      \tskuId = skuId.join (' OR ');\n      \tskuId = '(' + skuId + ')';\n    }\n          \n\t//request.addParam('fq','PRODUCT_ID:'+productId);\n  \trequest.addParam('q','SKU_ID:'+skuId);\n}",
+            "type": "javascript-query",
+            "skip": false,
+            "label": "QueryParams: set Site Id & set ProductId",
+            "condition": "request.hasParam('site') && (request.hasParam('id') || request.hasParam('sku')) ;",
+            "secretSourceStageId": "tn"
+          },
+          {
+            "type": "recommendation",
+            "id": "b8b445e1-9e14-4f24-a196-539459a863b7",
+            "numRecommendations": 10,
+            "numSignals": 100,
+            "aggrType": "*",
+            "boostId": "id",
+            "boostingMethod": "query-param",
+            "boostingParam": "bq",
+            "queryParams": [
+              {
+                "key": "qf",
+                "value": "query_t"
+              },
+              {
+                "key": "pf",
+                "value": "query_t^3"
+              },
+              {
+                "key": "pf",
+                "value": "query_t~2^7"
+              },
+              {
+                "key": "pf",
+                "value": "query_t~0^1"
+              },
+              {
+                "key": "mm",
+                "value": "50%"
+              },
+              {
+                "key": "defType",
+                "value": "edismax"
+              },
+              {
+                "key": "sort",
+                "value": "score desc, weight_d desc"
+              }
+            ],
+            "rollupField": "doc_id_s",
+            "rollupWeightField": "weight_d",
+            "type": "recommendation",
+            "skip": true,
+            "secretSourceStageId": "b8b445e1-9e14-4f24-a196-539459a863b7",
+            "properties": {
+              "autoCreated": true
+            }
+          },
+          {
+            "type": "search-fields",
+            "id": "e4e4902a-cdf4-4f2f-9837-8ca8cb653b36",
+            "rows": 100,
+            "start": 0,
+            "queryFields": [
+              {
+                "field": "PRODUCT_ID"
+              }
+            ],
+            "returnFields": [ ],
+            "type": "search-fields",
+            "skip": false,
+            "secretSourceStageId": "e4e4902a-cdf4-4f2f-9837-8ca8cb653b36",
+            "properties": {
+              "autoCreated": true
+            }
+          },
+	  {
+            "type": "sub-query",
+            "id": "jta",
+            "key": "dummyInternationalProduct",
+            "collection": "bedbath",
+            "handler": "select",
+            "method": "GET",
+            "parentParams": [
+              "currencyCode",
+              "collection"
+            ],
+            "rollupKeys": [],
+            "params": [
+              {
+                "key": "q",
+                "value": "id:\"dummyInternationalProduct\""
+              },
+              {
+                "key": "fl",
+                "value": "*"
+              },
+              {
+                "key": "spellcheck",
+                "value": "false"
+              }
+            ],
+            "headers": [],
+            "skip": false,
+            "label": "Fetch Conversion rate",
+            "condition": "request.hasParam(\"country\") && !request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"US\") && !request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"MX\") && !request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"CA\")\n",
+            "secretSourceStageId": "jta"
+          },
+          {
+            "type": "javascript-query",
+            "id": "9wn",
+            "script": "var country= (request.hasParam(\"country\") && request.getFirstParam(\"country\") != null && request.getFirstParam(\"country\").toUpperCase()!='CA') ?request.getFirstParam(\"country\").toUpperCase():'US';\nvar currencyCode= (request.hasParam(\"currencyCode\") && request.getFirstParam(\"currencyCode\") != null && request.getFirstParam(\"currencyCode\").toUpperCase()!='CAD') ?request.getFirstParam(\"currencyCode\").toUpperCase():'USD';\n\nvar hasFl=\trequest.hasParam(\"fl\");\n\n\nvar dummyInternationalProduct=ctx.get( \"dummyInternationalProduct\" );\n\nif(dummyInternationalProduct != null && dummyInternationalProduct.response != null && dummyInternationalProduct.response.docs.size()>0 && dummyInternationalProduct.response.docs.get(0) != null){\n\n\tvar scaleValue=dummyInternationalProduct.response.docs.get(0)['SF_'+currencyCode];\n\n\tvar scale=2;\n\tif(scaleValue==null){\n\t\tscale=2;\n\t}else{\n\t\tscale =parseInt(scaleValue);\n\t}\n\tvar sitename=\"US\";\n\tvar srcsite= request.getFirstParam(\"site\");\n\tif(\"BuyBuyBaby\" == srcsite){\n\t\tsitename=\"BBY\";\n\t} else if(\"BedBathCanada\" == srcsite){\n\t\tsitename=\"CA\";\n\t}else{\n\t}\n\n\tvar lcpfactor = 1; \n\tvar lcpfactorValue;\n\tif(country!=null && country!==\"\"){\n\t\tlcpfactorValue=dummyInternationalProduct.response.docs.get(0)['PC_'+sitename+'_DSK_'+country];\n\t}\n\n\tif(lcpfactorValue==null){\n\t\tlcpfactor=1;\n\t}else{\n\t\tlcpfactor=lcpfactorValue;\n    }\n\n\n\tif(hasFl){\n\t\t//logger.info('hasFl:'+hasFl);\n\t\tvar existing_fl_list=request.getParam(\"fl\");\n\t\tvar ArrayList = Java.type(\"java.util.ArrayList\");\n\t\tvar international_fl_list = new ArrayList;\n\n\t\tfor (var i = 0; i < existing_fl_list.size(); i++) {\n\t\t\tinternational_fl_list.add(existing_fl_list.get(i).trim());\n\t\t}\n\n\t\tinternational_fl_list.add(\"INTL_LOW_PRICE:convertPrice(LOW_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',LOW_PRICE_c)\");\n\t\tinternational_fl_list.add(\"INTL_HIGH_PRICE:convertPrice(HIGH_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',HIGH_PRICE_c)\");\n\t\tinternational_fl_list.add(\"INTL_WAS_LOW_PRICE:convertPrice(WAS_LOW_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',WAS_LOW_PRICE_c)\");\n\t\tinternational_fl_list.add(\"INTL_WAS_HIGH_PRICE:convertPrice(WAS_HIGH_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',WAS_HIGH_PRICE_c)\");\n       \n\t\trequest.removeParam(\"fl\");\n\t\trequest.putParams(\"fl\",international_fl_list);\t\n\t}\n\n} else{\n\tif(request.hasParam(\"facet\")){\n\t\trequest.removeParam(\"facet\");\n\t}\n\tvar existing_fl_list=request.getParam(\"fl\");\n\tvar ArrayList = Java.type(\"java.util.ArrayList\");\n\tvar international_fl_list = new ArrayList;\n\n\tfor (var i = 0; i < existing_fl_list.size(); i++) {\n\t\tinternational_fl_list.add(existing_fl_list.get(i).trim());\n\t}\n\n\tvar lcpfactor = 1; \n\tvar scale=2;\n\t\n\tinternational_fl_list.add(\"INTL_LOW_PRICE:convertPrice(LOW_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',LOW_PRICE_c)\");\n\tinternational_fl_list.add(\"INTL_HIGH_PRICE:convertPrice(HIGH_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',HIGH_PRICE_c)\");\n\tinternational_fl_list.add(\"INTL_WAS_LOW_PRICE:convertPrice(WAS_LOW_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',WAS_LOW_PRICE_c)\");\n\tinternational_fl_list.add(\"INTL_WAS_HIGH_PRICE:convertPrice(WAS_HIGH_PRICE,\"+lcpfactor+\",\"+scale+\",'\"+currencyCode+\"',WAS_HIGH_PRICE_c)\");\n\t\n\trequest.removeParam(\"fl\");\n\trequest.putParams(\"fl\",international_fl_list);\t\n  \t\n}\n",
+            "skip": false,
+            "label": "Internationalization ",
+            "condition": "request.hasParam(\"country\") && !request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"US\") && !request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"MX\") && !request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"CA\")\n",
+            "secretSourceStageId": "9wn"
+          },
+          {
+            "type": "facet",
+            "id": "7cbb7085-7e55-4594-b1b4-5404605d05e5",
+            "fieldFacets": [
+              
+            ],
+            "type": "facet",
+            "skip": true,
+            "secretSourceStageId": "7cbb7085-7e55-4594-b1b4-5404605d05e5",
+            "properties": {
+              "autoCreated": true
+            }
+          },
+          {
+            "type": "solr-query",
+            "id": "ffea3e05-7251-4129-a51f-bfba1175435d",
+            "allowedRequestHandlers": [
+              
+            ],
+            "httpMethod": "POST",
+            "allowFederatedSearch": false,
+            "type": "solr-query",
+            "skip": false,
+            "secretSourceStageId": "ffea3e05-7251-4129-a51f-bfba1175435d",
+            "properties": {
+              "autoCreated": true
+            }
+          },
+          {
+            "type": "set-params",
+            "id": "xo6",
+            "params": [
+              {
+                "key": "SKU_ZK_HOST",
+                "value": "${secret.query-pipeline.skuClusterZK}",
+                "policy": "append"
+              },
+              {
+                "key": "SKU_COLLECTION_NAME",
+                "value": "sku",
+                "policy": "append"
+              },
+              {
+                "key": "SKU_ZK_CLIENT_TIMEOUT",
+                "value": "200",
+                "policy": "append"
+              },
+              {
+                "key": "SKU_ZK_CONNECT_TIMEOUT",
+                "value": "400",
+                "policy": "append"
+              },
+              {
+                "key": "SKU_SO_TIMEOUT",
+                "value": "100",
+                "policy": "append"
+              },
+              {
+                "key": "SKU_CONNECTION_TIMEOUT",
+                "value": "200",
+                "policy": "append"
+              }
+            ],
+            "type": "set-params",
+            "skip": false,
+            "label": "Query Warranty Skus: zkhost and collection name",
+            "condition": "request.hasParam('addWar') && (\"true\").equals(request.getFirstParam('addWar')) && request.hasParam(\"country\") && request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"US\") && request.hasParam('site') && request.getFirstParam('site').toUpperCase().equalsIgnoreCase(\"BEDBATHUS\")",
+            "secretSourceStageId": "xo6"
+          },
+          {
+            "type": "javascript-query",
+            "id": "x9",
+            "script": "if(request){  try{\n  \nvar tree = com.lucidworks.apollo.solr.response.JSONResponse.class.getDeclaredField(\"tree\");\ntree.setAccessible(true);\nvar sku_zk_host = request.getFirstParam('SKU_ZK_HOST');\nvar sku_collection_name = request.getFirstParam('SKU_COLLECTION_NAME');\n\nvar bbbZkClientTimeout = request.getFirstParam('SKU_ZK_CLIENT_TIMEOUT');\nvar bbbZkConnectTimeout = request.getFirstParam('SKU_ZK_CONNECT_TIMEOUT');\nvar bbbSoTimeout = request.getFirstParam('SKU_SO_TIMEOUT');\nvar bbbConnectionTimeout = request.getFirstParam('SKU_CONNECTION_TIMEOUT');\n\nvar siteId = request.getFirstParam('site');\n\nif(siteId === null || siteId === '') {\n    siteId = 'BedBathUS';\n}\nvar SolrQuery = Java.type(\"org.apache.solr.client.solrj.SolrQuery\");\nvar QueryRequest = Java.type(\"org.apache.solr.client.solrj.request.QueryRequest\");\nvar SolrSupport = Java.type(\"com.lucidworks.spark.util.SolrSupport\");\nvar ORDER = Java.type(\"org.apache.solr.client.solrj.SolrQuery.ORDER\");\nvar CloudClientParams = Java.type(\"com.lucidworks.spark.util.SolrSupport.CloudClientParams\");\nvar solrResponse = tree.get(response.initialEntity);\nvar docs = solrResponse.get(\"response\").get(\"docs\");\n\nif (docs.length > 0) {\n  var allDocsLowPrice = 0.0;\n  var allDocsHighPrice = 0.0;\n  var allDocsWarrantyType = '';\n  for (var doc_index = 0; doc_index < docs.length; doc_index++) {\n    var warrantyType = docs[doc_index].get(\"WARRANTY_TYPE_s\");\n    if (!warrantyType) {\n\t  continue;\n\t}\n    var productId = docs[doc_index].get(\"PRODUCT_ID\");\n    var lowPrice = docs[doc_index].get(\"LOW_PRICE\");\n    var highPrice = docs[doc_index].get(\"HIGH_PRICE\");\n    if (!highPrice) {\n      highPrice = lowPrice;\n    }\n    if (allDocsLowPrice == 0.0 || lowPrice < allDocsLowPrice){\n      allDocsLowPrice = lowPrice;\n    }\n    if (allDocsHighPrice == 0.0 || highPrice > allDocsHighPrice){\n      allDocsHighPrice = highPrice;\n    }\n    if (allDocsWarrantyType == '') {\n      allDocsWarrantyType = warrantyType;\n    } else {\n      allDocsWarrantyType = allDocsWarrantyType + \" OR \" + warrantyType;\n    }\n  }\n  if (allDocsWarrantyType !== '') {\n    var solrQuery = new SolrQuery();\n    solrQuery.setFacet(false);\n    solrQuery.setQuery('*:*');\n    solrQuery.addFilterQuery('SITE_ID:'+siteId);\n    solrQuery.addFilterQuery('(MIN_WARRANTY_ELIGIBLE_PRICE_d:[0 TO '+allDocsLowPrice+'] AND MAX_WARRANTY_ELIGIBLE_PRICE_d:['+allDocsLowPrice+' TO *]) OR (MIN_WARRANTY_ELIGIBLE_PRICE_d:[0 TO '+allDocsHighPrice+'] AND MAX_WARRANTY_ELIGIBLE_PRICE_d:['+allDocsHighPrice+' TO *])');\n    solrQuery.addFilterQuery('WARRANTY_ELIGIBLE_TYPES_ss:'+allDocsWarrantyType);\n    solrQuery.addFilterQuery('WARRANTY_ENABLED_b:true');\n    var sku_fields_list = \"SKU_ID,DISPLAY_NAME,WARRANTY_PRODUCT_ID_s,IS_PRICE,MIN_WARRANTY_ELIGIBLE_PRICE_d,MAX_WARRANTY_ELIGIBLE_PRICE_d,WARRANTY_ELIGIBLE_TYPES_ss\";\n    solrQuery.setFields(sku_fields_list);\n    solrQuery.setStart(0);\n    solrQuery.addSort(\"IS_PRICE\", ORDER.asc);\n    \n    var queryRequest = new QueryRequest(solrQuery);\n    var queryResponse = null;\n    \n    if(bbbZkClientTimeout && bbbZkConnectTimeout && bbbSoTimeout && bbbConnectionTimeout) {\n      var cachedCloudClient = SolrSupport.getCachedCloudClient(new CloudClientParams(sku_zk_host, bbbZkClientTimeout , bbbZkConnectTimeout , null));\n      cachedCloudClient.setSoTimeout(bbbSoTimeout);\n      cachedCloudClient.setConnectionTimeout(bbbConnectionTimeout);\n      queryResponse = queryRequest.process(cachedCloudClient, sku_collection_name);\n    }\n    \n    if (queryResponse !== null && queryResponse.getResults() !== null && queryResponse.getResults().getNumFound()) {\n      var warrantyDocs = queryResponse.response.get(\"response\");\n      for (var doc_index = 0; doc_index < docs.length; doc_index++) {\n        var warrantyType = docs[doc_index].get(\"WARRANTY_TYPE_s\");\n        if (!warrantyType) {\n\t      continue;\n\t    }\n\t\tvar minWarrantyPrice = 0.0;\n        var lowPrice = docs[doc_index].get(\"LOW_PRICE\");\n        var highPrice = docs[doc_index].get(\"HIGH_PRICE\");\n\t    if (!highPrice) {\n          highPrice = lowPrice;\n        }\n        for (var warr_index = 0; warr_index < warrantyDocs.length; warr_index++) {\n          var minWarrantyEligiblePrice = warrantyDocs[warr_index].get(\"MIN_WARRANTY_ELIGIBLE_PRICE_d\");\n          var maxWarrantyEligiblePrice = warrantyDocs[warr_index].get(\"MAX_WARRANTY_ELIGIBLE_PRICE_d\");\n          var warrantyEligibleTypes = warrantyDocs[warr_index].get(\"WARRANTY_ELIGIBLE_TYPES_ss\");\n\t      if (((minWarrantyEligiblePrice <= lowPrice && maxWarrantyEligiblePrice >= lowPrice) || (minWarrantyEligiblePrice <= highPrice && maxWarrantyEligiblePrice >= highPrice)) && warrantyEligibleTypes.indexOf(warrantyType) > -1) {\n            minWarrantyPrice = warrantyDocs[warr_index].get(\"IS_PRICE\");\n            break;\n          }\n        }\n        docs[doc_index].put(\"MIN_WARRANTY_PRICE\", minWarrantyPrice);\n      }\n    }\n  }\n}\n  \n  } catch (err) { logger.error(\"Exception while running stage \",err);}}\n\n",
+            "type": "javascript-query",
+            "skip": false,
+            "label": "Query Warranty Skus",
+            "condition": "request.hasParam('addWar') && (\"true\").equals(request.getFirstParam('addWar')) && request.hasParam(\"country\") && request.getFirstParam(\"country\").toUpperCase().equalsIgnoreCase(\"US\") && request.hasParam('site') && request.getFirstParam('site').toUpperCase().equalsIgnoreCase(\"BEDBATHUS\")",
+            "secretSourceStageId": "x9"
+          },
+          {
+            "type": "javascript-query",
+            "id": "2jn",
+            "script": "//parse the original response\nvar obj = JSON.parse( response.initialEntity);\n// get the number of products requested orginally\nvar prd_count = request.getFirstFieldValue(\"prod_count\");\n\n//if count returned in response doesn't matches number of products requested, call everliving\n// this will still fire everliving if product is repeated in request.\n\nif ( obj.response.numFound != prd_count){\n  request.putSingleParam(\"everliving\",\"true\");\n}",
+            "skip": false,
+            "label": "Verify everliving call is required",
+            "condition": "request.hasParam('site') && request.hasParam('id')",
+            "secretSourceStageId": "2jn"
+		}, {
+			"type": "javascript-query",
+			"id": "d2",
+			"script": "var qid = request.getFirstParam('q');\n\nrequest.removeParam('q');\nrequest.addParam('q', 'PRODUCT_ID:'+qid);\n",
+			"skip": false,
+			"label": "Update Query Param for Everliving",
+			"condition": "",
+			"secretSourceStageId": "d2"
+		},{
+            "type": "sub-query",
+            "id": "wbg",
+            "key": "everliving-results",
+            "collection": "bedbath_everliving",
+            "handler": "select",
+            "method": "GET",
+            "parentParams": [
+              "q",
+	          "fq",
+	          "fl",
+			  "defType"
+            ],
+            "rollupKeys": [
+              
+            ],
+            "params": [
+              {
+                "key": "qf",
+                "value": "PRODUCT_ID"
+              },
+              {
+                "key": "q",
+                "value": "${q}"
+              },
+              {
+                "key": "fq",
+                "value": "${fq}"
+              },
+              {
+                "key": "mm",
+                "value": "1"
+              },
+              {
+                "key": "omitHeader",
+                "value": "true"
+              },
+			  {
+			    "key": "rows",
+			    "value": "100"
+			  }
+            ],
+            "headers": [
+              
+            ],
+            "skip": false,
+            "label": "Call Everliving Collection",
+            "condition": "request.hasParam(\"everliving\");\n",
+            "secretSourceStageId": "wbg"
+          },
+          {
+            "type": "javascript-query",
+            "id": "fv6",
+            "script": "//add the result set returned from everliving call.\nresponse.initialEntity.appendObject('everliving', ctx.getProperty(\"everliving-results\"));\n",
+            "skip": false,
+            "label": "Augment Everliving Response",
+            "condition": "ctx.hasProperty(\"everliving-results\");",
+            "secretSourceStageId": "fv6"
+          },
+          {
+            "type" : "javascript-query",
+            "id" : "x49",
+            "script" : "var tree = com.lucidworks.apollo.solr.response.JSONResponse.class.getDeclaredField(\"tree\");\ntree.setAccessible(true); \nvar solrResponse = tree.get(response.initialEntity);\nvar docs = solrResponse.get(\"response\").get(\"docs\");\n\nvar date = Java.type(\"java.util.Date\"); \nvar Calendar = Java.type(\"java.util.Calendar\");\nvar cal = Calendar.getInstance();\ncal.clear();\ncal.set(Calendar.YEAR, 2001);\n\nvar currentDate = new date();\nvar sdf = Java.type(\"java.text.SimpleDateFormat\");\nvar timeFormat = \"dd-MMM-yy hh.mm.ss\";\nvar dateformat = new sdf(timeFormat);\ndateformat.set2DigitYearStart(cal.getTime());\n\nif (docs.length > 0) {\n    //getting the today's date by sending the blank string\n    var sysDate = getDate(\"\", \"start\");\n  for (var doc_index = 0; doc_index < docs.length; doc_index++) {\n    \tif(docs[doc_index].get(\"ATTRIBUTES_JSON\")) {\n        var sku_attributes = docs[doc_index].get(\"ATTRIBUTES_JSON\");\n        if (sku_attributes && sku_attributes != \"\") {\n            var jsonSkuAttributes = JSON.parse(sku_attributes);\n\t\t\t//logic to find the current date\n            var jsonArray = Java.type(\"org.json.simple.JSONArray\")\n            var updated_sku_attributes = new jsonArray();\n\n            for (var index = 0; index < jsonSkuAttributes.length; index++) {\n              \n              \tvar aatrReltnStartDate = null;\n              \tvar aatrReltnEndDate = null;\n              \tvar aatrInfoStartDate = null;\n              \tvar aatrInfoEndDate = null;\n              \n              \tif(jsonSkuAttributes[index]['START_DATE'] && jsonSkuAttributes[index]['START_DATE'] !== \"\") {\n                \taatrInfoStartDate = getDate(simplifyDateFormat(jsonSkuAttributes[index]['START_DATE']), \"start\");\n                } else {\n                  \taatrInfoStartDate = sysDate;\n\t\t\t\t}\n              \n              \tif(jsonSkuAttributes[index]['END_DATE'] &&  jsonSkuAttributes[index]['END_DATE'] !== \"\"){\n                \taatrInfoEndDate = getDate(simplifyDateFormat(jsonSkuAttributes[index]['END_DATE']), \"end\");\n            \t} else {\n                    aatrInfoEndDate = sysDate;\n\t\t\t\t}\n              \n          \t\tif(jsonSkuAttributes[index]['ATTR_RELN_START_DATE'] && jsonSkuAttributes[index]['ATTR_RELN_START_DATE'] !== \"\"){\n                \taatrReltnStartDate = getDate(simplifyDateFormat(jsonSkuAttributes[index]['ATTR_RELN_START_DATE']), \"start\");   \n                } else {\n                    aatrReltnStartDate = sysDate;\n\t\t\t\t}\n              \n                if(jsonSkuAttributes[index]['ATTR_RELN_END_DATE'] && jsonSkuAttributes[index]['ATTR_RELN_END_DATE'] !== \"\") {\n                \taatrReltnEndDate = getDate(simplifyDateFormat(jsonSkuAttributes[index]['ATTR_RELN_END_DATE']), \"end\");\n   \t\t\t\t} else {\n                    aatrReltnEndDate = sysDate;\n\t\t\t\t}\n                \n                if (((sysDate.equals(aatrInfoStartDate) || sysDate.after(aatrInfoStartDate)) && (sysDate.equals(aatrReltnStartDate) || sysDate.after(aatrReltnStartDate))) && ((sysDate.equals(aatrReltnEndDate) || sysDate.before(aatrReltnEndDate)) && (sysDate.equals(aatrInfoEndDate) || sysDate.before(aatrInfoEndDate)))) {\n                  \tupdated_sku_attributes.add(JSON.stringify(jsonSkuAttributes[index]));\n                }\n                docs[doc_index].put(\"ATTRIBUTES_JSON\", updated_sku_attributes);\n            }\n        }\n\t\t}\n    }\n}\n\nfunction simplifyDateFormat(input_date) {\n\tif(input_date.split(\" \").length !== 2) {\n\t\tinput_date = input_date + \" 00.00.00\";\n\t}\n\treturn input_date;\n}\n\nfunction getDate(input_date, dateType) {\n    if(dateType.length > 0) {\n    if (dateType === \"start\") {\n      if (input_date === \"\") {\n            var dateStr = dateformat.format(currentDate.getTime());\n          \treturn dateformat.parse(dateStr);\n        } else {\n          return dateformat.parse(input_date);\n        }\n    } else if (dateType === \"end\") {\n      if (input_date === \"\") {\n            var futureDate = new Date();\n            futureDate.setTime(currentDate.getTime() + 1 * 24 * 60 * 60 * 1000);\n            var dateStr = dateformat.format(futureDate.getTime());\n          \treturn dateformat.parse(dateStr);\n        } else {\n          return dateformat.parse(input_date);\n        }\n    }\n\t}\n}",
+            "type" : "javascript-query",
+            "skip" : false,
+            "label" : "filter Attributes_JSON on start-end date",
+            "secretSourceStageId" : "x49"
+          }
+        ],
+        "properties": {
+          "secretSourcePipelineId": "bbb-product-full"
+        }
+      }
+    ]
+  },
+  "properties" : [
+  {
+    "id" : "secret.query-pipeline.skuClusterZK"
+  } ],
+  "metadata" : {
+  }
+}
